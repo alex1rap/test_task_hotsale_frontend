@@ -21,7 +21,6 @@ export default class RegistrationForm extends React.Component<{}, any> {
 
     // @ts-ignore
     handleChange(event: any) {
-        console.log(event)
         this.setState({error: null, [event.target.name]: event.target.value})
     }
 
@@ -40,13 +39,12 @@ export default class RegistrationForm extends React.Component<{}, any> {
             password: this.state.password,
             confirmation: this.state.confirmation
         }, (res: any) => res.json().then((res: any) => {
-            if (!res.ok) {
-                console.log(res)
+            if (res.code && res.code >= 400) {
                 if (res.message) {
                     this.setState({
                         error: res.message
                     })
-                } else {
+                } else if (res) {
                     this.setState({
                         error: "При відправці запиту сталася помилка. Спробуйте пізніше."
                     });
