@@ -2,7 +2,7 @@ const register = (data: any, callback: CallableFunction): void => {
 
     window.fetch('/registration', {
         method: 'POST',
-        mode: 'cors',
+        mode: 'no-cors',
         cache: 'no-cache',
         credentials: 'same-origin',
         headers: {

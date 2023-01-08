@@ -39,17 +39,24 @@ export default class RegistrationForm extends React.Component<{}, any> {
             email: this.state.email,
             password: this.state.password,
             confirmation: this.state.confirmation
-        }, (res: any) => {
+        }, (res: any) => res.json().then((res: any) => {
             if (!res.ok) {
-                this.setState({
-                    error: "При відправці запиту сталася помилка. Спробуйте пізніше."
-                })
+                console.log(res)
+                if (res.message) {
+                    this.setState({
+                        error: res.message
+                    })
+                } else {
+                    this.setState({
+                        error: "При відправці запиту сталася помилка. Спробуйте пізніше."
+                    });
+                }
             } else {
                 this.setState({
                     registered: true
                 });
             }
-        })
+        }))
     }
 
     validateEmail(email: string): boolean {
