@@ -1,5 +1,6 @@
 import React from "react"
 import {Button, Form, FormControl, FormGroup} from "react-bootstrap"
+import {register} from "../../services/Registration";
 
 export default class RegistrationForm extends React.Component<{}, any> {
     constructor(props: any) {
@@ -32,36 +33,23 @@ export default class RegistrationForm extends React.Component<{}, any> {
         if (!this.validatePassword(this.state.password, this.state.confirmation)) {
             return
         }
-        window.fetch('/registration', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            redirect: 'follow',
-            referrerPolicy: 'no-referrer',
-            body: JSON.stringify({
-                name: this.state.name,
-                last_name: this.state.lastName,
-                email: this.state.email,
-                password: this.state.password,
-                confirmation: this.state.confirmation
-            })
-        }).then(
-            (res: any) => {
-                if (!res.ok) {
-                    this.setState({
-                        error: "При відправці запиту сталася помилка. Спробуйте пізніше."
-                    })
-                } else {
-                    this.setState({
-                        registered: true
-                    });
-                }
+        register({
+            name: this.state.name,
+            last_name: this.state.lastName,
+            email: this.state.email,
+            password: this.state.password,
+            confirmation: this.state.confirmation
+        }, (res: any) => {
+            if (!res.ok) {
+                this.setState({
+                    error: "При відправці запиту сталася помилка. Спробуйте пізніше."
+                })
+            } else {
+                this.setState({
+                    registered: true
+                });
             }
-        )
+        })
     }
 
     validateEmail(email: string): boolean {
